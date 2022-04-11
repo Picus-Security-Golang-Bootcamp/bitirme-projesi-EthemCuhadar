@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/logger"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/config"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -12,4 +14,10 @@ func main() {
 	// Initialize zap logger.
 	logger.InitLogger()
 	defer logger.Close()
+
+	cfg, err := config.LoadConfig("./../pkg/config/config-local")
+	if err != nil {
+		zap.L().Error("Path not found for LoadConfig()", zap.Error(err))
+	}
+	fmt.Println(cfg)
 }
