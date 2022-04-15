@@ -14,20 +14,24 @@ import (
 // and writing.
 func Connect(cfg *config.Config) *gorm.DB {
 	zap.L().Debug("database.bd.Connect")
+
+	// Connection
 	db, err := gorm.Open(postgres.Open(cfg.DBConfig.DataSourceName), &gorm.Config{})
 	if err != nil {
-		zap.L().Fatal("database.db.Connect - Cannot connect to database", zap.Error(err))
+		zap.L().Fatal("database.db.Connect - open error", zap.Error(err))
 	}
 
 	origin, err := db.DB()
 	if err != nil {
-		zap.L().Fatal("database.db.Connect - cannot take db.DB from database", zap.Error(err))
+		zap.L().Fatal("database.db.Connect - origin error", zap.Error(err))
 	}
 
+	// Set config parameters
 	origin.SetMaxOpenConns(cfg.DBConfig.MaxOpen)
 	origin.SetMaxIdleConns(cfg.DBConfig.MaxIdle)
 	origin.SetConnMaxLifetime(time.Duration(cfg.DBConfig.MaxLifetime) * time.Second)
 
+	// Ping
 	if err := origin.Ping(); err != nil {
 		zap.L().Fatal("database.db.Connect - cannot ping database", zap.Error(err))
 	}
