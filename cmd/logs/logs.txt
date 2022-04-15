@@ -1,0 +1,3 @@
+2022-04-11T13:28:31Z	[31mERROR[0m	cmd/main.go:20	Path not found for LoadConfig()	{"error": "config file not found"}
+2022-04-12T09:51:45Z	[35mDEBUG[0m	database/db.go:16	database.bd.Connect
+2022-04-12T09:51:46Z	[35mDEBUG[0m	database/db.go:39	database.db.Close
