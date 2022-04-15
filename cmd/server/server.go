@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/database"
