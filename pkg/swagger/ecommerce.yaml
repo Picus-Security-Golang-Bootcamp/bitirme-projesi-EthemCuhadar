@@ -1,0 +1,538 @@
+swagger: "2.0"
+info:
+  title: "ECommerce API"
+  description: "This is a e-commerce api in which product, category and user endpoints are implemented."
+  version: "1.0.0"
+host: "localhost:8080"
+basePath: "/api/v1/ecommerce-api"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+tags:
+  - name: "product"
+    x-displayName: "Product"
+    description: |
+      The products in the database will be reachable with product endpoints.
+  - name: "category"
+    x-displayName: "Category"
+    description: |
+      The Categories in the database will be reachable with category endpoints.
+paths:
+  /healthcheck:
+    get:
+      tags:
+        - api
+      summary: "Show application health and version information"
+      description: "This endpoint will return some basic information about our API, including its current version number and operating environment (development, staging, production, etc.)."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/healthcheck"
+
+  /product/create:
+    post:
+      tags:
+        - product
+      summary: "Create New Product"
+      description: "POST products will get a product information and creates it in the database."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets a id parameter of a product."
+          schema:
+            $ref: "#/definitions/RequestProductDto"
+      responses:
+        201:
+          description: "Create successfully"
+          schema:
+            $ref: "#/definitions/ResponseProductDto"
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /product/{product_id}:
+    get:
+      tags:
+        - product
+      summary: "Returns a product by ID."
+      description: "GET product will fetch a single product and it's relative information(Name, Stock, Price etc.)"
+      parameters:
+        - in: "path"
+          name: "product_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a product."
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ResponseProductDto"
+        404:
+          description: "A product with the specified ID was not found."
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    put:
+      tags:
+        - product
+      summary: "Update Specific Product"
+      description: "PUT a product will get a product information and updates them in the database."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "product_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a product."
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets a product object."
+          schema:
+            $ref: "#/definitions/RequestProductDto"
+      responses:
+        200:
+          description: "Create successfully"
+          schema:
+            $ref: "#/definitions/ResponseProductDto"
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+    delete:
+      tags:
+        - product
+      summary: "Delete Specific Product"
+      description: "DELETE a product will get a product id and delete it from the database."
+      parameters:
+        - name: "product_id"
+          in: "path"
+          description: "The method gets a id parameter of a product."
+          required: true
+          type: "string"
+          format: "string"
+      responses:
+        204:
+          description: "Product is deleted from database"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        404:
+          description: "Product doesn't exist in database"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+            
+  /category/{category_id}/product:
+    get:
+      tags:
+        - product
+      summary: "Fetch Products of Specific Category"
+      description: "GET products will return all products which belongs to a specific category. By default all of the products of category will be displayed in JSON format with relative information fields(id and name)."
+      parameters:
+        - in: "path"
+          name: "category_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a product."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ResponseAllProductsDto"
+        404:
+          description: "Record Not Found found."
+          schema:
+            $ref: "#/definitions/ApiResponse"
+            
+  /category:
+    get:
+      tags:
+        - category
+      summary: "Fetch All Categories"
+      description: "GET categories will return all categories in the database."
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ResponseAllCategoriesDto"
+        404:
+          description: "A product with the specified ID was not found."
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        default:
+          description: "Unexpected error"
+
+  /category/{category_id}:
+    put:
+      tags:
+        - category
+      summary: "Update Specific Category"
+      description: "PUT a category will get a category information and updates them in the database."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "category_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a category."
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets a category object."
+          schema:
+            $ref: "#/definitions/RequestCategoryDto"
+      responses:
+        200:
+          description: "Updated Successfully"
+          schema:
+            $ref: "#/definitions/ResponseCategoryDto"
+        404:
+          description: "A category with the specified ID was not found."
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+  /category/create:
+    post:
+      tags:
+        - category
+      summary: "Create New Category"
+      description: "POST category will get a category information and creates it in the database."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets a id parameter of a category."
+          schema:
+            $ref: "#/definitions/RequestCategoryDto"
+      responses:
+        201:
+          description: "Create successfully"
+          schema:
+            $ref: "#/definitions/ResponseCategoryDto"
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: "User Login"
+      description: "User can login the system with necessary informations."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets login parameters of a user."
+          schema:
+            $ref: "#/definitions/LoginRequest"
+      responses:
+        200:
+          description: "Login successful"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        405:
+          description: "Wrong login parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: "User Register"
+      description: "User can register the system with necessary informations."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets register parameters of a user."
+          schema:
+            $ref: "#/definitions/RegisterRequest"
+      responses:
+        200:
+          description: "Register successful"
+          schema:
+            $ref: "#/definitions/RegisterResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+definitions:
+  RequestProductDto:
+    type: "object"
+    required:
+        - "id"
+        - "name"
+        - "categories"
+        - "description"
+        - "price"
+        - "stock"
+        - "brand"
+    properties:
+        id:
+            type: "string"
+            format: "string"
+            example: "62995601-15f3-40bc-80c8-900f62116000"
+        name:
+            type: "string"
+            format: "string"
+            example: "Brand X Man Jean"
+        categories:
+            type: "array"
+            format: "[]Category"
+            items:
+              $ref: "#/definitions/RequestCategoryDto"
+            example: "[book1, book2, book3]"
+        description:
+            type: "string"
+            format: "string"
+            example: "This is a sample description"
+        price:
+            type: "number"
+            format: "float64"
+            example: "19.99"
+        stock:
+            type: "integer"
+            format: "int64"
+            example: 100
+        brand:
+            type: "string"
+            format: "string"
+            example: "Sample Brand"
+
+  ResponseProductDto:
+    type: "object"
+    required:
+        - "id"
+        - "name"
+        - "categories"
+        - "description"
+        - "price"
+        - "stock"
+        - "brand"
+    properties:
+        id:
+          type: "string"
+          format: "string"
+          example: "62995601-15f3-40bc-80c8-900f62116000"
+        name:
+            type: "string"
+            format: "string"
+            example: "Brand X Man Jean"
+        categories:
+            type: "array"
+            format: "[]Category"
+            items:
+              $ref: "#/definitions/ResponseCategoryDto"
+            example: "[book1, book2, book3]"
+        description:
+            type: "string"
+            format: "string"
+            example: "This is a sample description"
+        price:
+            type: "number"
+            format: "float64"
+            example: "19.99"
+        stock:
+            type: "integer"
+            format: "int64"
+            example: 100
+        brand:
+            type: "string"
+            format: "string"
+            example: "Sample Brand"
+
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+      message:
+        type: "string"
+      details:
+        description: a (key, value) map.
+        type: object
+  
+  healthcheck:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        format: "string"
+        example: "available"
+      environment:
+        type: "string"
+        format: "string"
+        example: "development"
+      version:
+        type: "string"
+        format: "string"
+        example: "1.0.0"
+
+  RequestCategoryDto:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+    properties:
+      id:
+        type: "string"
+        format: "string"
+        example: "62995601-15f3-40bc-80c8-900f62116000"
+      name:
+        type: "string"
+        format: "string"
+        example: "Men Jeans"
+  
+  ResponseCategoryDto:
+    type: "object"
+    required:
+      - "id"
+      - "name"
+    properties:
+      id:
+          type: "string"
+          format: "string"
+          example: "62995601-15f3-40bc-80c8-900f62116000"
+      name:
+        type: "string"
+        format: "string"
+        example: "Men Jeans"
+
+  ResponseAllProductsDto:
+    type: "object"
+    required:
+      - "Products"
+    properties:
+      Products:
+        type: "array"
+        format: "[]ResponseProductDto"
+        items:
+          $ref: "#/definitions/ResponseProductDto"
+        example: "[product1, product2, product3]"
+
+  ResponseAllCategoriesDto:
+    type: "object"
+    required:
+      - "Categories"
+    properties:
+      Categories:
+        type: "array"
+        format: "[]ResponseCategoryDto"
+        items:
+          $ref: "#/definitions/ResponseCategoryDto"
+        example: "[category1, category2, category3]"
+
+  LoginRequest:
+    type: "object"
+    required:
+        - "username"
+        - "password"
+    properties:
+      username:
+        type: "string"
+        format: "string"
+        example: "sampleUsername"
+      password:
+        type: "string"
+        format: "string"
+        example: "dummyPassword"
+  
+  LoginResponse:
+    type: "object"
+    required:
+        - jwt
+    properties:
+      jwt:
+        type: "string"
+        format: "string"
+        example: "dummyJWT"
+
+  RegisterRequest:
+    type: "object"
+    required:
+      - firstName
+      - lastName
+      - username
+      - email
+      - password
+    properties:
+      firstName:
+        type: "string"
+        format: "string"
+        example: "John"
+      lastName:
+        type: "string"
+        format: "string"
+        example: "Doe"
+      username:
+        type: "string"
+        format: "string"
+        example: "johndoe"
+      email:
+        type: "string"
+        format: "string"
+        example: "example@gmail.com"
+      password:
+        type: "string"
+        format: "string"
+        example: "dummyPassword"
+      isAdmin:
+        type: "boolean"
+        format: "bool"
+        example: false
+
+  RegisterResponse:
+    type: "object"
+    required:
+      - message
+    properties:
+      message:
+        type: "string"
+        format: "string"
+        example: "successful registration"
