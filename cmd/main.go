@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/cmd/server"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/logger"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/config"
 	"go.uber.org/zap"
@@ -21,5 +22,5 @@ func main() {
 	}
 	fmt.Println(cfg)
 
-	InitServer(cfg)
+	server.InitServer(cfg)
 }
