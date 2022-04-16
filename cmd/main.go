@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/cmd/server"
-	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/logger"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/config"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/logger"
 	"go.uber.org/zap"
 )
 
