@@ -17,9 +17,12 @@ func (r *Repository) Migrations() {
 	productPrototype := models.Product{}
 	categoryPrototype := models.Category{}
 	userPrototype := models.User{}
+	cartPrototype := models.Cart{}
 	r.DB.AutoMigrate(
-		productPrototype,
-		categoryPrototype,
-		userPrototype,
+		&productPrototype,
+		&categoryPrototype,
+		&userPrototype,
+		&cartPrototype,
+		&models.Item{},
 	)
 }
