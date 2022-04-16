@@ -26,6 +26,7 @@ func InitServer(cfg *config.Config) {
 	productRouter := rootRouter.Group("/")
 	categoryRouter := rootRouter.Group("/category")
 	userRouter := rootRouter.Group("/user")
+	cartRouter := rootRouter.Group("/")
 
 	// Repository
 	repo := repo.NewRepository(DB)
@@ -40,6 +41,9 @@ func InitServer(cfg *config.Config) {
 
 	userService := service.NewUserService(repo)
 	handler.NewUserHandler(userRouter, userService, cfg)
+
+	cartService := service.NewCartService(repo)
+	handler.NewCartHandler(cartRouter, cartService, cfg)
 
 	// Run localhost:8080
 	r.Run(":8080")
