@@ -1,11 +1,17 @@
 package server
 
 import (
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/database"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/handler"
 	repo "github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/repository"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/service"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/config"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/graceful"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +26,13 @@ func InitServer(cfg *config.Config) {
 
 	// Gin initialize
 	r := gin.Default()
+
+	srv := &http.Server{
+		Addr:         fmt.Sprintf(":%s", cfg.ServerConfig.Port),
+		Handler:      r,
+		ReadTimeout:  time.Duration(cfg.ServerConfig.ReadTimeoutSecs * int64(time.Second)),
+		WriteTimeout: time.Duration(cfg.ServerConfig.WriteTimeoutSecs * int64(time.Second)),
+	}
 
 	// Router groups
 	rootRouter := r.Group(cfg.ServerConfig.RoutePrefix)
@@ -45,7 +58,15 @@ func InitServer(cfg *config.Config) {
 	cartService := service.NewCartService(repo)
 	handler.NewCartHandler(cartRouter, cartService, cfg)
 
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	graceful.ShutdownGin(srv, time.Duration(cfg.ServerConfig.TimeoutSecs))
+
 	// Run localhost:8080
-	r.Run(":8080")
+	// r.Run(":8080")
 
 }
