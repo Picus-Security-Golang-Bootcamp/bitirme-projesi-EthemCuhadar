@@ -302,6 +302,39 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
 
+  /user/{user_id}/cart/create:
+    post:
+      tags:
+        - cart
+      summary: "Create Cart for User"
+      description: "This endpoint and method will create a cart for a user"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets register parameters of a user."
+          schema:
+            $ref: "#/definitions/CreateCartRequest"
+      responses:
+        200:
+          description: "Register successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
 definitions:
   RequestProductDto:
     type: "object"
@@ -527,6 +560,44 @@ definitions:
         format: "bool"
         example: false
 
+  CreateCartRequest:
+    type: "object"
+    required:
+      - "userId"
+    properties:
+      userId:
+        type: "string"
+        format: "string"
+        example: "62995601-15f3-40bc-80c8-900f62116000"
+
+  CreateCartResponse:
+    type: "object"
+    required:
+      - "item"
+      - "price"
+      - "id"
+      - "userId"
+    properties:
+      id:
+        type: "string"
+        format: "string"
+        example: "62995601-15f3-40bc-80c8-900f62116000"
+      item:
+        type: "array"
+        format: "[]Item"
+        example: "62995601-15f3-40bc-80c8-900f62116000"
+        items:
+          $ref: "#/definitions/Item"
+        example: "[item1, item2, item3]"
+      price:
+        type: "number"
+        format: "float64"
+        example: "99.99"
+      userId:
+        type: "string"
+        format: "string"
+        example: "62995601-15f3-40bc-80c8-900f62116000"
+
   RegisterResponse:
     type: "object"
     required:
@@ -536,3 +607,23 @@ definitions:
         type: "string"
         format: "string"
         example: "successful registration"
+
+  Item:
+    type: "object"
+    required:
+      - id
+      - price
+      - quantity
+    properties:
+      id:
+        type: "string"
+        format: "string"
+        example: "62995601-15f3-40bc-80c8-900f62116000"
+      price:
+        type: "number"
+        format: "float64"
+        example: "19.99"
+      quantity:
+        type: "integer"
+        format: "uint64"
+        example: 5
