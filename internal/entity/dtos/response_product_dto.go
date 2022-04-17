@@ -53,7 +53,7 @@ type ResponseProductDto struct {
 	// stock
 	// Example: 100
 	// Required: true
-	Stock *int64 `json:"stock"`
+	Stock *uint64 `json:"stock"`
 }
 
 // Validate validates this response product dto

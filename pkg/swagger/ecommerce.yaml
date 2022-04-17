@@ -644,7 +644,7 @@ definitions:
             example: "19.99"
         stock:
             type: "integer"
-            format: "int64"
+            format: "uint64"
             example: 100
         brand:
             type: "string"
@@ -686,7 +686,7 @@ definitions:
             example: "19.99"
         stock:
             type: "integer"
-            format: "int64"
+            format: "uint64"
             example: 100
         brand:
             type: "string"
@@ -899,7 +899,6 @@ definitions:
     type: "object"
     required:
       - productId
-      - price
       - quantity
     properties:
       productId:
