@@ -11,7 +11,7 @@ type Product struct {
 	Name        string  `json:"name" gorm:"uniqueIndex; not null"`
 	Description string  `json:"description" gorm:"not null"`
 	Price       float64 `json:"price" gorm:"not null"`
-	Stock       int64   `json:"stock" gorm:"not null"`
+	Stock       uint64  `json:"stock" gorm:"not null"`
 	Brand       string  `json:"brand" gorm:"not null"`
 
 	Category          []Category        `gorm:"many2many:products_categories;" json:"category"`
