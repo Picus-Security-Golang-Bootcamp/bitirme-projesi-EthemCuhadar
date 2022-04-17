@@ -878,11 +878,11 @@ definitions:
         example: true
       orderTime:
         type: "string"
-        format: "time.Time"
+        format: "date"
         example: "2022-04-17T07:00:27.677Z"
       cancelTime:
         type: "string"
-        format: "time.Time"
+        format: "date"
         example: "2022-04-17T07:00:27.677Z"
 
   RegisterResponse:
