@@ -24,19 +24,19 @@ func (r *Repository) DeleteCart(cart_id string) error {
 	if err != nil {
 		return err
 	}
-	for _, item := range cart.Items {
-		r.DeleteItem(item.ID)
-	}
-	if result := r.DB.Unscoped().Delete(&cart); result.Error != nil {
+	// for _, item := range cart.Items {
+	// 	r.DeleteItem(item.ID)
+	// }
+	if result := r.DB.Delete(&cart); result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
-func (r *Repository) UpdateCart(c *models.Cart) error {
+func (r *Repository) UpdateCart(c *models.Cart) (*models.Cart, error) {
 	// DB query to update
 	if err := r.DB.Save(&c).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return c, nil
 }
