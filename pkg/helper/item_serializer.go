@@ -8,7 +8,7 @@ import (
 func ConvertItemModelToResponseItem(i *models.Item) *dtos.Item {
 	return &dtos.Item{
 		ProductID: &i.ProductId,
-		Price:     &i.Price,
+		Price:     i.Price,
 		Quantity:  &i.Quantity,
 	}
 }
@@ -16,7 +16,7 @@ func ConvertItemModelToResponseItem(i *models.Item) *dtos.Item {
 func ConvertRequestItemToItemModel(i *dtos.Item) *models.Item {
 	return &models.Item{
 		ProductId: *i.ProductID,
-		Price:     *i.Price,
+		Price:     i.Price,
 		Quantity:  *i.Quantity,
 	}
 }
