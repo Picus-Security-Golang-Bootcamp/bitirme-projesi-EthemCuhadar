@@ -23,7 +23,8 @@ type CreateCartResponse struct {
 	// cancel time
 	// Example: 2022-04-17T07:00:27.677Z
 	// Required: true
-	CancelTime *string `json:"cancelTime"`
+	// Format: date
+	CancelTime *strfmt.Date `json:"cancelTime"`
 
 	// id
 	// Example: 62995601-15f3-40bc-80c8-900f62116000
@@ -43,7 +44,8 @@ type CreateCartResponse struct {
 	// order time
 	// Example: 2022-04-17T07:00:27.677Z
 	// Required: true
-	OrderTime *string `json:"orderTime"`
+	// Format: date
+	OrderTime *strfmt.Date `json:"orderTime"`
 
 	// price
 	// Example: 99.99
@@ -100,6 +102,10 @@ func (m *CreateCartResponse) validateCancelTime(formats strfmt.Registry) error {
 		return err
 	}
 
+	if err := validate.FormatOf("cancelTime", "body", "date", m.CancelTime.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -151,6 +157,10 @@ func (m *CreateCartResponse) validateItem(formats strfmt.Registry) error {
 func (m *CreateCartResponse) validateOrderTime(formats strfmt.Registry) error {
 
 	if err := validate.Required("orderTime", "body", m.OrderTime); err != nil {
+		return err
+	}
+
+	if err := validate.FormatOf("orderTime", "body", "date", m.OrderTime.String(), formats); err != nil {
 		return err
 	}
 
