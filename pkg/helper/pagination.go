@@ -32,13 +32,10 @@ func GeneratePaginationFromRequest(c *gin.Context) *Pagination {
 		switch key {
 		case "limit":
 			limit, _ = strconv.ParseInt(queryValue, 10, 64)
-			break
 		case "page":
 			page, _ = strconv.ParseInt(queryValue, 10, 64)
-			break
 		case "sort":
 			sort = queryValue
-			break
 		}
 	}
 
