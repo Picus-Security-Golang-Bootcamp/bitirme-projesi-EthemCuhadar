@@ -19,6 +19,7 @@ var (
 	CannotBindGivenData = errors.New("Could not bind given data")
 	ValidationError     = errors.New("Validation failed for given payload")
 	UniqueError         = errors.New("Item should be unique on database")
+	OrderError          = errors.New("Items are aldready ordered")
 )
 
 type RestError dtos.APIResponse
@@ -74,6 +75,8 @@ func ParseErrors(err error) RestErr {
 		return NewRestError(http.StatusBadRequest, ValidationError.Error(), err)
 	case strings.Contains(err.Error(), "23505"):
 		return NewRestError(http.StatusBadRequest, UniqueError.Error(), err)
+	case errors.Is(err, OrderError):
+		return NewRestError(http.StatusBadRequest, err.Error(), err)
 
 	default:
 		if restErr, ok := err.(RestErr); ok {
