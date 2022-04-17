@@ -7,6 +7,7 @@ import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/dtos"
 	repo "github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/repository"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/helper"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/httpErrors"
 	"go.uber.org/zap"
 )
 
@@ -137,7 +138,7 @@ func (cs *CartService) DeleteItem(item_id string, cart_id string) (*dtos.CreateC
 		return nil, err
 	}
 	if cartModel.IsOrdered {
-		return nil, errors.New("items ordered")
+		return nil, httpErrors.OrderError
 	}
 
 	// Response from repository
