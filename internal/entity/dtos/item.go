@@ -21,8 +21,7 @@ type Item struct {
 
 	// price
 	// Example: 19.99
-	// Required: true
-	Price *float64 `json:"price"`
+	Price float64 `json:"price,omitempty"`
 
 	// product Id
 	// Example: 62995601-15f3-40bc-80c8-900f62116000
@@ -39,10 +38,6 @@ type Item struct {
 func (m *Item) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validatePrice(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateProductID(formats); err != nil {
 		res = append(res, err)
 	}
@@ -54,15 +49,6 @@ func (m *Item) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Item) validatePrice(formats strfmt.Registry) error {
-
-	if err := validate.Required("price", "body", m.Price); err != nil {
-		return err
-	}
-
 	return nil
 }
 
