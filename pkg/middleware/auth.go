@@ -40,3 +40,22 @@ func JWTMiddleware(cfg *config.Config) gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func UserMiddleware(cfg *config.Config) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		user_id := c.Param("user_id")
+		jwtMetaData, err := helper.ExtractMetaData(c.Request, cfg)
+		if err != nil {
+			return
+		}
+		if jwtMetaData.UserID == user_id {
+			c.Next()
+			c.Abort()
+			return
+		} else {
+			c.JSON(http.StatusForbidden, gin.H{"error": "You are not allowed to use this endpoint!"})
+			c.Abort()
+			return
+		}
+	}
+}
