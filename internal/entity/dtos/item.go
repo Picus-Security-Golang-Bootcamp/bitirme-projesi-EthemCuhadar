@@ -19,15 +19,15 @@ import (
 // swagger:model Item
 type Item struct {
 
-	// id
-	// Example: 62995601-15f3-40bc-80c8-900f62116000
-	// Required: true
-	ID *string `json:"id"`
-
 	// price
 	// Example: 19.99
 	// Required: true
 	Price *float64 `json:"price"`
+
+	// product Id
+	// Example: 62995601-15f3-40bc-80c8-900f62116000
+	// Required: true
+	ProductID *string `json:"productId"`
 
 	// quantity
 	// Example: 5
@@ -39,11 +39,11 @@ type Item struct {
 func (m *Item) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateID(formats); err != nil {
+	if err := m.validatePrice(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validatePrice(formats); err != nil {
+	if err := m.validateProductID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -57,18 +57,18 @@ func (m *Item) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Item) validateID(formats strfmt.Registry) error {
+func (m *Item) validatePrice(formats strfmt.Registry) error {
 
-	if err := validate.Required("id", "body", m.ID); err != nil {
+	if err := validate.Required("price", "body", m.Price); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *Item) validatePrice(formats strfmt.Registry) error {
+func (m *Item) validateProductID(formats strfmt.Registry) error {
 
-	if err := validate.Required("price", "body", m.Price); err != nil {
+	if err := validate.Required("productId", "body", m.ProductID); err != nil {
 		return err
 	}
 
