@@ -22,22 +22,10 @@ type Cart struct {
 	CancelTime time.Time `json:"cancelTime"`
 }
 
-type Item struct {
-	ID        string  `json:"id"`
-	Price     float64 `json:"price"`
-	Quantity  uint64  `json:"quantity"`
-	CartId    string  `json:"cartId"`
-	ProductId string  `json:"productId"`
-}
-
 func (c *Cart) BeforeCreate(tx *gorm.DB) error {
 	c.ID = uuid.NewString()
 	return nil
 }
-
-// func (c *Cart) CheckkOrder()(error){
-
-// }
 
 func (c *Cart) AddItem(i *Item) error {
 	zap.L().Debug("models.cart.AddItem")
