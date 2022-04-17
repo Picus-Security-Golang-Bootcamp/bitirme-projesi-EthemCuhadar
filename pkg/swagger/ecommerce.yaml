@@ -9,6 +9,7 @@ schemes:
   - "http"
 consumes:
   - "application/json"
+  - "multipart/form-data"
 produces:
   - "application/json"
 tags:
@@ -240,16 +241,15 @@ paths:
       summary: "Create New Category"
       description: "POST category will get a category information and creates it in the database."
       consumes:
-        - "application/json"
+        - "multipart/form-data"
       produces:
         - "application/json"
       parameters:
-        - in: "body"
-          name: "body"
+        - in: "formData"
+          name: "csv-file"
+          type: "file"
           required: true
-          description: "The method gets a id parameter of a category."
-          schema:
-            $ref: "#/definitions/RequestCategoryDto"
+          description: "The method gets a csv file to create a product."   
       responses:
         201:
           description: "Create successfully"
