@@ -33,6 +33,7 @@ func NewCartHandler(r *gin.RouterGroup, service *service.CartService, cfg *confi
 		r.DELETE("user/:user_id/cart/:cart_id/item/:item_id", ch.DeleteItem)
 		r.POST("user/:user_id/cart/:cart_id/complete", ch.CompleteOrder)
 		r.DELETE("/user/:user_id/cart/:cart_id/cancel", ch.DeleteCart)
+		r.GET("/user/:user_id/order", ch.GetAllOrders)
 	}
 
 }
@@ -169,4 +170,13 @@ func (ch *CartHandler) CancelOrder(c *gin.Context) {
 		c.JSON(httpErrors.ErrorResponse(err))
 	}
 	c.JSON(http.StatusOK, nil)
+}
+
+func (ch *CartHandler) GetAllOrders(c *gin.Context) {
+	user_id := c.Param("user_id")
+	orders, err := ch.service.GetAllOrders(user_id)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+	}
+	c.JSON(http.StatusOK, orders)
 }
