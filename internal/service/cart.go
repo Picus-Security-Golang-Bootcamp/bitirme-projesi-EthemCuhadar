@@ -84,6 +84,18 @@ func (cs *CartService) AddItemToCart(item *dtos.Item, cart_id string) (*dtos.Cre
 		return nil, errors.New("items ordered")
 	}
 
+	product, err := cs.repository.FetchProduct(*item.ProductID)
+	if err != nil {
+		return nil, err
+	}
+
+	item.Price = product.Price
+
+	product.Stock -= *item.Quantity
+	if _, err := cs.repository.UpdateProduct(product); err != nil {
+		return nil, err
+	}
+
 	zap.L().Debug("handler.cart.additemtocart")
 	itemModel := helper.ConvertRequestItemToItemModel(item)
 	itemModel.CartId = cart_id
