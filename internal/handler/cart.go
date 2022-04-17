@@ -29,7 +29,7 @@ func NewCartHandler(r *gin.RouterGroup, service *service.CartService, cfg *confi
 		r.DELETE("/user/:user_id/cart/:cart_id", ch.DeleteCart)
 		r.GET("user/:user_id/cart/:cart_id", ch.FetchCart)
 		r.POST("user/:user_id/cart/:cart_id", ch.AddItemToCart)
-		r.POST("user/:user_id/cart/:cart_id/item/:item_id", ch.UpdateItem)
+		r.PUT("user/:user_id/cart/:cart_id/item/:item_id", ch.UpdateItem)
 		r.DELETE("user/:user_id/cart/:cart_id/item/:item_id", ch.DeleteItem)
 		r.POST("user/:user_id/cart/:cart_id/complete", ch.CompleteOrder)
 		r.DELETE("/user/:user_id/cart/:cart_id/cancel", ch.DeleteCart)

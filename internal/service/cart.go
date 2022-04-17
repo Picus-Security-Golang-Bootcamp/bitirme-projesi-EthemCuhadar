@@ -121,6 +121,7 @@ func (cs *CartService) AddItemToCart(item *dtos.Item, cart_id string) (*dtos.Cre
 }
 
 func (cs *CartService) UpdateItem(item *dtos.Item, item_id string, cart_id string) (*dtos.CreateCartResponse, error) {
+
 	cartModel, err := cs.repository.FetchCart(cart_id)
 	if err != nil {
 		return nil, err
@@ -130,6 +131,9 @@ func (cs *CartService) UpdateItem(item *dtos.Item, item_id string, cart_id strin
 	}
 
 	oldItem, err := cs.repository.FetchItem(item_id)
+	if err != nil {
+		return nil, err
+	}
 
 	product, err := cs.repository.FetchProduct(*item.ProductID)
 	if err != nil {
@@ -142,18 +146,22 @@ func (cs *CartService) UpdateItem(item *dtos.Item, item_id string, cart_id strin
 		return nil, err
 	}
 
-	itemModel := helper.ConvertRequestItemToItemModel(item)
-	itemModel.CartId = cart_id
+	oldItem.Quantity = *item.Quantity
 
-	if err := cs.repository.UpdateItem(itemModel); err != nil {
+	if err := cs.repository.UpdateItem(oldItem); err != nil {
 		return nil, err
 	}
 
-	if err := cartModel.ValidateCart(); err != nil {
+	updatedCart, err := cs.repository.FetchCart(cart_id)
+	if err != nil {
 		return nil, err
 	}
 
-	cartResponse := helper.ConvertCartModelToCreateCartResponse(cartModel)
+	if err := updatedCart.ValidateCart(); err != nil {
+		return nil, err
+	}
+
+	cartResponse := helper.ConvertCartModelToCreateCartResponse(updatedCart)
 	return cartResponse, nil
 }
 
