@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -12,23 +13,31 @@ var minCartPrice float64 = 0
 
 type Cart struct {
 	gorm.Model
-	ID     string  `json:"id"`
-	UserID string  `json:"userId"`
-	Items  []Item  `json:"items"`
-	Price  float64 `json:"price"`
+	ID         string    `json:"id"`
+	UserID     string    `json:"userId"`
+	Items      []Item    `json:"items"`
+	Price      float64   `json:"price"`
+	IsOrdered  bool      `json:"ordered" gorm:"default:false"`
+	OrderTime  time.Time `json:"orderTime"`
+	CancelTime time.Time `json:"cancelTime"`
 }
 
 type Item struct {
-	CartId   string  `json:"cartId"`
 	ID       string  `json:"id"`
 	Price    float64 `json:"price"`
 	Quantity uint64  `json:"quantity"`
+	CartId   string  `json:"cartId"`
+	// OrderId  string  `json:"orderId"`
 }
 
 func (c *Cart) BeforeCreate(tx *gorm.DB) error {
 	c.ID = uuid.NewString()
 	return nil
 }
+
+// func (c *Cart) CheckkOrder()(error){
+
+// }
 
 func (c *Cart) AddItem(i *Item) error {
 	zap.L().Debug("models.cart.AddItem")
