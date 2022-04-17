@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
-	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/models"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/service"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/helper"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/httpErrors"
@@ -23,11 +23,17 @@ func NewCategoryHandler(r *gin.RouterGroup, service *service.CategoryService) {
 }
 
 func (ch *CategoryHandler) CreateCategory(c *gin.Context) {
-	categoryBody := models.Category{}
-	if err := c.Bind(&categoryBody); err != nil {
+	csvPartFile, _, openErr := c.Request.FormFile("file")
+	if openErr != nil {
+		c.JSON(http.StatusBadRequest, fmt.Sprintf("file err : %s", openErr.Error()))
+		return
+	}
+
+	categoryBody, err := helper.ReadCSV(csvPartFile)
+	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 	}
-	category, err := ch.service.CreateCategory(&categoryBody)
+	category, err := ch.service.CreateCategory(categoryBody)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 	}
