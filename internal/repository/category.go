@@ -12,6 +12,8 @@ type ICategoryRepository interface {
 }
 
 func (r *Repository) CreateCategory(c *models.Category) (*models.Category, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	if err := r.DB.Create(&c).Error; err != nil {
 		return nil, err
 	}
@@ -19,6 +21,8 @@ func (r *Repository) CreateCategory(c *models.Category) (*models.Category, error
 }
 
 func (r *Repository) FetchAllCategories(pag *helper.Pagination) (*[]models.Category, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	var categories = &[]models.Category{}
 
 	offset := (pag.Page) * pag.Limit
@@ -31,6 +35,8 @@ func (r *Repository) FetchAllCategories(pag *helper.Pagination) (*[]models.Categ
 }
 
 func (r *Repository) FetchCategory(id string) (*models.Category, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	var category = &models.Category{}
 	if err := r.DB.Where(&models.Category{ID: id}).First(&category).Error; err != nil {
 		return nil, err

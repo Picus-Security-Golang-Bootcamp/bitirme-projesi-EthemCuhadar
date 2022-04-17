@@ -13,6 +13,8 @@ type IProductRepository interface {
 }
 
 func (r *Repository) CreateProduct(p *models.Product) (*models.Product, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
 	// DB query to create
 	if err := r.DB.Create(&p).Error; err != nil {
@@ -22,6 +24,8 @@ func (r *Repository) CreateProduct(p *models.Product) (*models.Product, error) {
 }
 
 func (r *Repository) FetchAllProducts(pag *helper.Pagination) (*[]models.Product, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	var products = &[]models.Product{}
 
 	offset := (pag.Page) * pag.Limit
@@ -35,6 +39,8 @@ func (r *Repository) FetchAllProducts(pag *helper.Pagination) (*[]models.Product
 }
 
 func (r *Repository) FetchProduct(id string) (*models.Product, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	var product = &models.Product{}
 
 	// DB query to get
@@ -51,6 +57,8 @@ func (r *Repository) FetchProductsOfSpecificCategory(id string, pag *helper.Pagi
 	if err != nil {
 		return nil, err
 	}
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
 	var products = &[]models.Product{}
 
@@ -63,6 +71,8 @@ func (r *Repository) FetchProductsOfSpecificCategory(id string, pag *helper.Pagi
 }
 
 func (r *Repository) UpdateProduct(p *models.Product) (*models.Product, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
 	// DB query to update
 	if err := r.DB.Save(&p).Error; err != nil {
@@ -76,7 +86,8 @@ func (r *Repository) DeleteProduct(id string) error {
 	if err != nil {
 		return err
 	}
-
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	if result := r.DB.Unscoped().Delete(&product); result.Error != nil {
 		return result.Error
 	}

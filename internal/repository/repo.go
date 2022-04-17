@@ -1,11 +1,14 @@
 package repo
 
 import (
+	"sync"
+
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/models"
 	"gorm.io/gorm"
 )
 
 type Repository struct {
+	mu sync.Mutex
 	DB *gorm.DB
 }
 

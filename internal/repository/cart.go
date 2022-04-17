@@ -3,6 +3,8 @@ package repo
 import "github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/models"
 
 func (r *Repository) CreateCart(c *models.Cart) (*models.Cart, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	if err := r.DB.Create(&c).Error; err != nil {
 		return nil, err
 	}
@@ -10,6 +12,8 @@ func (r *Repository) CreateCart(c *models.Cart) (*models.Cart, error) {
 }
 
 func (r *Repository) FetchCart(cart_id string) (*models.Cart, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	var cart = &models.Cart{}
 
 	// DB query to get
@@ -24,6 +28,8 @@ func (r *Repository) DeleteCart(cart_id string) error {
 	if err != nil {
 		return err
 	}
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	// for _, item := range cart.Items {
 	// 	r.DeleteItem(item.ID)
 	// }
@@ -34,6 +40,8 @@ func (r *Repository) DeleteCart(cart_id string) error {
 }
 
 func (r *Repository) UpdateCart(c *models.Cart) (*models.Cart, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	// DB query to update
 	if err := r.DB.Save(&c).Error; err != nil {
 		return nil, err
@@ -42,6 +50,8 @@ func (r *Repository) UpdateCart(c *models.Cart) (*models.Cart, error) {
 }
 
 func (r *Repository) GetAllOrders(user_id string) (*[]models.Cart, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	var carts = &[]models.Cart{}
 
 	// offset := (pag.Page) * pag.Limit
