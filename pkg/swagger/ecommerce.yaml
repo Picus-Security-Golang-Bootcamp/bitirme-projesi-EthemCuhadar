@@ -880,7 +880,7 @@ definitions:
         type: "string"
         format: "time.Time"
         example: "2022-04-17T07:00:27.677Z"
-      canelTime:
+      cancelTime:
         type: "string"
         format: "time.Time"
         example: "2022-04-17T07:00:27.677Z"
