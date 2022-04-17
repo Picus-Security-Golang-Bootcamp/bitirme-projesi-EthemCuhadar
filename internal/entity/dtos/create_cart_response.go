@@ -20,15 +20,30 @@ import (
 // swagger:model CreateCartResponse
 type CreateCartResponse struct {
 
+	// cancel time
+	// Example: 2022-04-17T07:00:27.677Z
+	// Required: true
+	CancelTime *string `json:"cancelTime"`
+
 	// id
 	// Example: 62995601-15f3-40bc-80c8-900f62116000
 	// Required: true
 	ID *string `json:"id"`
 
+	// is ordered
+	// Example: true
+	// Required: true
+	IsOrdered *bool `json:"isOrdered"`
+
 	// item
 	// Example: [item1, item2, item3]
 	// Required: true
 	Item []*Item `json:"item"`
+
+	// order time
+	// Example: 2022-04-17T07:00:27.677Z
+	// Required: true
+	OrderTime *string `json:"orderTime"`
 
 	// price
 	// Example: 99.99
@@ -45,11 +60,23 @@ type CreateCartResponse struct {
 func (m *CreateCartResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateCancelTime(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
+	if err := m.validateIsOrdered(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateItem(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateOrderTime(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -67,9 +94,27 @@ func (m *CreateCartResponse) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *CreateCartResponse) validateCancelTime(formats strfmt.Registry) error {
+
+	if err := validate.Required("cancelTime", "body", m.CancelTime); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *CreateCartResponse) validateID(formats strfmt.Registry) error {
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *CreateCartResponse) validateIsOrdered(formats strfmt.Registry) error {
+
+	if err := validate.Required("isOrdered", "body", m.IsOrdered); err != nil {
 		return err
 	}
 
@@ -98,6 +143,15 @@ func (m *CreateCartResponse) validateItem(formats strfmt.Registry) error {
 			}
 		}
 
+	}
+
+	return nil
+}
+
+func (m *CreateCartResponse) validateOrderTime(formats strfmt.Registry) error {
+
+	if err := validate.Required("orderTime", "body", m.OrderTime); err != nil {
+		return err
 	}
 
 	return nil
