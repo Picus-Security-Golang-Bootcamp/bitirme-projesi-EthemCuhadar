@@ -12,6 +12,10 @@ consumes:
 produces:
   - "application/json"
 tags:
+  - name: "api"
+    x-displayName: "Api"
+    description: |
+      The healthcheck information of api will be reachable with product endpoints.
   - name: "product"
     x-displayName: "Product"
     description: |
@@ -20,6 +24,14 @@ tags:
     x-displayName: "Category"
     description: |
       The Categories in the database will be reachable with category endpoints.
+  - name: "cart"
+    x-displayName: "Cart"
+    description: |
+      The carts in the database will be reachable with cart endpoints.
+  - name: "item"
+    x-displayName: "Item"
+    description: |
+      The items in the database will be reachable with item endpoints.
 paths:
   /healthcheck:
     get:
@@ -348,6 +360,12 @@ paths:
           type: "string"
           format: "string"
           description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
       responses:
         200:
           description: "Deletion successful"
@@ -356,7 +374,6 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
 
-  /user/{user_id}/cart/{cart_id}:
     get:
       tags:
         - cart
@@ -367,6 +384,12 @@ paths:
       parameters:
         - in: "path"
           name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
           required: true
           type: "string"
           format: "string"
@@ -381,7 +404,6 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
 
- /user/{user_id}/cart/{cart_id}:
     post:
       tags:
         - cart
@@ -394,6 +416,12 @@ paths:
       parameters:
         - in: "path"
           name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
           required: true
           type: "string"
           format: "string"
@@ -431,6 +459,18 @@ paths:
           type: "string"
           format: "string"
           description: "The method gets a id parameter of an item."
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
         - in: "body"
           name: "body"
           required: true
@@ -447,7 +487,6 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse" 
 
-  /user/{user_id}/cart/{cart_id}/item/{item_id}:
     delete:
       tags:
         - cart
@@ -462,6 +501,18 @@ paths:
           type: "string"
           format: "string"
           description: "The method gets a id parameter of an item."
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
       responses:
         200:
           description: "Register successful"
@@ -472,7 +523,7 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse" 
 
-/user/{user_id}/cart/{cart_id}/complete:
+  /user/{user_id}/cart/{cart_id}/complete:
     post:
       tags:
         - cart
@@ -486,7 +537,13 @@ paths:
           required: true
           type: "string"
           format: "string"
-          description: "The method gets a id parameter of an cart."
+          description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
       responses:
         200:
           description: "Order successful"
@@ -509,7 +566,13 @@ paths:
           required: true
           type: "string"
           format: "string"
-          description: "The method gets a id parameter of an cart."
+          description: "The method gets a id parameter of a cart."
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
       responses:
         200:
           description: "Cancelation successful"
@@ -787,6 +850,9 @@ definitions:
       - "price"
       - "id"
       - "userId"
+      - "isOrdered"
+      - "orderTime"
+      - "cancelTime"
     properties:
       id:
         type: "string"
@@ -795,7 +861,6 @@ definitions:
       item:
         type: "array"
         format: "[]Item"
-        example: "62995601-15f3-40bc-80c8-900f62116000"
         items:
           $ref: "#/definitions/Item"
         example: "[item1, item2, item3]"
@@ -807,6 +872,18 @@ definitions:
         type: "string"
         format: "string"
         example: "62995601-15f3-40bc-80c8-900f62116000"
+      isOrdered:
+        type: "boolean"
+        format: "bool"
+        example: true
+      orderTime:
+        type: "string"
+        format: "time.Time"
+        example: "2022-04-17T07:00:27.677Z"
+      canelTime:
+        type: "string"
+        format: "time.Time"
+        example: "2022-04-17T07:00:27.677Z"
 
   RegisterResponse:
     type: "object"
