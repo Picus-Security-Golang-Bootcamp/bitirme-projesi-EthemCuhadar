@@ -14,13 +14,10 @@ func NewRepository(db *gorm.DB) *Repository {
 }
 
 func (r *Repository) Migrations() {
-	// r.DB.Migrator().CreateConstraint(&models.Order{}, "Items")
-	// r.DB.Migrator().CreateConstraint(&models.Order{}, "fk_orders_items")
 	productPrototype := models.Product{}
 	categoryPrototype := models.Category{}
 	userPrototype := models.User{}
 	cartPrototype := models.Cart{}
-	// orderPrototype := models.Order{}
 	itemPrototype := models.Item{}
 	r.DB.AutoMigrate(
 		&productPrototype,
@@ -28,6 +25,5 @@ func (r *Repository) Migrations() {
 		&userPrototype,
 		&cartPrototype,
 		&itemPrototype,
-		// &orderPrototype,
 	)
 }
