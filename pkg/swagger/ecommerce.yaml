@@ -335,6 +335,216 @@ paths:
           schema:
             $ref: "#/definitions/ApiResponse"
 
+  /user/{user_id}/cart/{cart_id}:
+    delete:
+      tags:
+        - cart
+      summary: "Delete Cart"
+      description: "This endpoint and method will create a cart for a user"
+      parameters:
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a cart."
+      responses:
+        200:
+          description: "Deletion successful"
+        405:
+          description: "Wrong Deletion Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+  /user/{user_id}/cart/{cart_id}:
+    get:
+      tags:
+        - cart
+      summary: "Fetch a Cart for User"
+      description: "This endpoint and method will fetch a cart for a user"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
+      responses:
+        200:
+          description: "Fetch successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+ /user/{user_id}/cart/{cart_id}:
+    post:
+      tags:
+        - cart
+      summary: "Add Item to Cart"
+      description: "This endpoint and method will add an item to cart for a user"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of a user."
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets register parameters of a user."
+          schema:
+            $ref: "#/definitions/Item"
+      responses:
+        200:
+          description: "Register successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse" 
+
+  /user/{user_id}/cart/{cart_id}/item/{item_id}:
+    post:
+      tags:
+        - cart
+      summary: "Add Item to Cart"
+      description: "This endpoint and method will add an item to cart for a user"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "item_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of an item."
+        - in: "body"
+          name: "body"
+          required: true
+          description: "The method gets a item to update."
+          schema:
+            $ref: "#/definitions/Item"
+      responses:
+        200:
+          description: "Register successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse" 
+
+  /user/{user_id}/cart/{cart_id}/item/{item_id}:
+    delete:
+      tags:
+        - cart
+      summary: "Delete Item from Cart"
+      description: "This endpoint and method will delete an item from cart for a user"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "item_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of an item."
+      responses:
+        200:
+          description: "Register successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse" 
+
+/user/{user_id}/cart/{cart_id}/complete:
+    post:
+      tags:
+        - cart
+      summary: "Complete Order"
+      description: "This endpoint and method will complete the order for user."
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of an cart."
+      responses:
+        200:
+          description: "Order successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+  /user/{user_id}/cart/{cart_id}/cancel:
+    delete:
+      tags:
+        - cart
+      summary: "Cancel Order"
+      description: "This endpoint and method will cancel the order if cancelation time is not passed."
+      parameters:
+        - in: "path"
+          name: "cart_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of an cart."
+      responses:
+        200:
+          description: "Cancelation successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+  /user/{user_id}/order:
+    get:
+      tags:
+        - cart
+      summary: "Fetch Orders"
+      description: "This endpoint and method will fetch orders of a user."
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "user_id"
+          required: true
+          type: "string"
+          format: "string"
+          description: "The method gets a id parameter of an user."
+      responses:
+        200:
+          description: "Order successful"
+          schema:
+            $ref: "#/definitions/CreateCartResponse"
+        405:
+          description: "Wrong Register Parameters"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
 definitions:
   RequestProductDto:
     type: "object"
