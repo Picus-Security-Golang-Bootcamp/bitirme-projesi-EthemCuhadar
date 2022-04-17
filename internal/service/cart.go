@@ -120,13 +120,26 @@ func (cs *CartService) AddItemToCart(item *dtos.Item, cart_id string) (*dtos.Cre
 	return cartResponse, nil
 }
 
-func (cs *CartService) UpdateItem(item *dtos.Item, cart_id string) (*dtos.CreateCartResponse, error) {
+func (cs *CartService) UpdateItem(item *dtos.Item, item_id string, cart_id string) (*dtos.CreateCartResponse, error) {
 	cartModel, err := cs.repository.FetchCart(cart_id)
 	if err != nil {
 		return nil, err
 	}
 	if cartModel.IsOrdered {
 		return nil, errors.New("items ordered")
+	}
+
+	oldItem, err := cs.repository.FetchItem(item_id)
+
+	product, err := cs.repository.FetchProduct(*item.ProductID)
+	if err != nil {
+		return nil, err
+	}
+
+	product.Stock -= *item.Quantity - oldItem.Quantity
+
+	if _, err := cs.repository.UpdateProduct(product); err != nil {
+		return nil, err
 	}
 
 	itemModel := helper.ConvertRequestItemToItemModel(item)
@@ -151,6 +164,22 @@ func (cs *CartService) DeleteItem(item_id string, cart_id string) (*dtos.CreateC
 	}
 	if cartModel.IsOrdered {
 		return nil, httpErrors.OrderError
+	}
+
+	item, err := cs.repository.FetchItem(item_id)
+	if err != nil {
+		return nil, err
+	}
+
+	product, err := cs.repository.FetchProduct(item.ProductId)
+	if err != nil {
+		return nil, err
+	}
+
+	product.Stock += item.Quantity
+
+	if _, err := cs.repository.UpdateProduct(product); err != nil {
+		return nil, err
 	}
 
 	// Response from repository
