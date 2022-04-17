@@ -201,3 +201,20 @@ func (cs *CartService) CancelOrder(cart_id string) error {
 	}
 	return nil
 }
+
+func (cs *CartService) GetAllOrders(user_id string) ([]dtos.CreateCartResponse, error) {
+	cartModels, err := cs.repository.GetAllOrders(user_id)
+	cartResponses := []dtos.CreateCartResponse{}
+	if err != nil {
+		return nil, err
+	}
+	for _, cart := range *cartModels {
+		err := cart.ValidateCart()
+		if err != nil {
+			return nil, err
+		}
+		cartResponse := helper.ConvertCartModelToCreateCartResponse(&cart)
+		cartResponses = append(cartResponses, *cartResponse)
+	}
+	return cartResponses, err
+}
