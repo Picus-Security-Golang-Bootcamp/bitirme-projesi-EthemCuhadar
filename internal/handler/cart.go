@@ -118,6 +118,7 @@ func (ch *CartHandler) AddItemToCart(c *gin.Context) {
 
 func (ch *CartHandler) UpdateItem(c *gin.Context) {
 	cart_id := c.Param("cart_id")
+	item_id := c.Param("item_id")
 
 	itemBody := dtos.Item{}
 
@@ -131,7 +132,7 @@ func (ch *CartHandler) UpdateItem(c *gin.Context) {
 		return
 	}
 
-	cartResponse, err := ch.service.UpdateItem(&itemBody, cart_id)
+	cartResponse, err := ch.service.UpdateItem(&itemBody, item_id, cart_id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
