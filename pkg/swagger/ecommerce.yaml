@@ -898,11 +898,11 @@ definitions:
   Item:
     type: "object"
     required:
-      - id
+      - productId
       - price
       - quantity
     properties:
-      id:
+      productId:
         type: "string"
         format: "string"
         example: "62995601-15f3-40bc-80c8-900f62116000"
