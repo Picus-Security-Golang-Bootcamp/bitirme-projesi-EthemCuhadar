@@ -23,11 +23,11 @@ type Cart struct {
 }
 
 type Item struct {
-	ID       string  `json:"id"`
-	Price    float64 `json:"price"`
-	Quantity uint64  `json:"quantity"`
-	CartId   string  `json:"cartId"`
-	// OrderId  string  `json:"orderId"`
+	ID        string  `json:"id"`
+	Price     float64 `json:"price"`
+	Quantity  uint64  `json:"quantity"`
+	CartId    string  `json:"cartId"`
+	ProductId string  `json:"productId"`
 }
 
 func (c *Cart) BeforeCreate(tx *gorm.DB) error {
