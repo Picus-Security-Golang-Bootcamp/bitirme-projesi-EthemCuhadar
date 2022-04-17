@@ -40,3 +40,16 @@ func (r *Repository) UpdateCart(c *models.Cart) (*models.Cart, error) {
 	}
 	return c, nil
 }
+
+func (r *Repository) GetAllOrders(user_id string) (*[]models.Cart, error) {
+	var carts = &[]models.Cart{}
+
+	// offset := (pag.Page) * pag.Limit
+	// queryBuilder := r.DB.Limit(int(pag.Limit)).Offset(int(offset)).Order(pag.Sort)
+
+	// DB query to get
+	if err := r.DB.Preload("Items").Where("user_id = ? AND is_ordered = ?", user_id, true).Find(&carts).Error; err != nil {
+		return nil, err
+	}
+	return carts, nil
+}
