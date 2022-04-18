@@ -3,6 +3,7 @@ package repo
 import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/models"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/helper"
+	"go.uber.org/zap"
 )
 
 type ICategoryRepository interface {
@@ -13,11 +14,13 @@ type ICategoryRepository interface {
 
 // CreateCategory gets data from database and sends them into service, if there are no errors
 func (r *Repository) CreateCategory(c *models.Category) (*models.Category, error) {
+	zap.L().Debug("repo.cart.CreateCategory")
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	// DB query
 	if err := r.DB.Create(&c).Error; err != nil {
+		zap.L().Debug("repo.cart.CreateCategory Error 1", zap.Reflect("error:", err))
 		return nil, err
 	}
 	return c, nil
@@ -25,6 +28,7 @@ func (r *Repository) CreateCategory(c *models.Category) (*models.Category, error
 
 // FetchAllCategories gets data from database and sends them into service, if there are no errors
 func (r *Repository) FetchAllCategories(pag *helper.Pagination) (*[]models.Category, error) {
+	zap.L().Debug("repo.cart.FetchAllCategories")
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var categories = &[]models.Category{}
@@ -35,6 +39,7 @@ func (r *Repository) FetchAllCategories(pag *helper.Pagination) (*[]models.Categ
 
 	// DB query
 	if err := queryBuilder.Find(&categories).Error; err != nil {
+		zap.L().Debug("repo.cart.FetchAllCategories Error 1", zap.Reflect("error:", err))
 		return nil, err
 	}
 	return categories, nil
@@ -42,12 +47,14 @@ func (r *Repository) FetchAllCategories(pag *helper.Pagination) (*[]models.Categ
 
 // FetchCategory gets data from database and sends them into service, if there are no errors
 func (r *Repository) FetchCategory(id string) (*models.Category, error) {
+	zap.L().Debug("repo.cart.FetchCategory")
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var category = &models.Category{}
 
 	// DB query
 	if err := r.DB.Where(&models.Category{ID: id}).First(&category).Error; err != nil {
+		zap.L().Debug("repo.cart.FetchCategory Error 1", zap.Reflect("error:", err))
 		return nil, err
 	}
 	return category, nil
