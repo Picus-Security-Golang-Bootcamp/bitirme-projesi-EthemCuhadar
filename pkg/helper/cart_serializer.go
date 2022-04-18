@@ -6,12 +6,14 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
+// ConvertCreateCartRequestToCartModel
 func ConvertCreateCartRequestToCartModel(c *dtos.CreateCartRequest) *models.Cart {
 	return &models.Cart{
 		UserID: *c.UserID,
 	}
 }
 
+// ConvertCartModelToCreateCartResponse
 func ConvertCartModelToCreateCartResponse(c *models.Cart) *dtos.CreateCartResponse {
 	items := make([]*dtos.Item, 0)
 

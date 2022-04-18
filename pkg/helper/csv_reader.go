@@ -7,6 +7,7 @@ import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/models"
 )
 
+// ReadCSV takes csv file and returns category body.
 func ReadCSV(csvPartFile multipart.File) (*models.Category, error) {
 	csvLines, readErr := csv.NewReader(csvPartFile).ReadAll()
 	if readErr != nil {
@@ -14,8 +15,7 @@ func ReadCSV(csvPartFile multipart.File) (*models.Category, error) {
 	}
 
 	var categoryBody models.Category
-	categoryBody.ID = csvLines[1][0]
-	categoryBody.Name = csvLines[1][1]
+	categoryBody.Name = csvLines[1][0]
 
 	return &categoryBody, nil
 }

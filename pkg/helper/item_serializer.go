@@ -5,6 +5,7 @@ import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/entity/models"
 )
 
+// ConvertItemModelToResponseItem
 func ConvertItemModelToResponseItem(i *models.Item) *dtos.Item {
 	return &dtos.Item{
 		ProductID: &i.ProductId,
@@ -13,6 +14,7 @@ func ConvertItemModelToResponseItem(i *models.Item) *dtos.Item {
 	}
 }
 
+// ConvertRequestItemToItemModel
 func ConvertRequestItemToItemModel(i *dtos.Item) *models.Item {
 	return &models.Item{
 		ProductId: *i.ProductID,

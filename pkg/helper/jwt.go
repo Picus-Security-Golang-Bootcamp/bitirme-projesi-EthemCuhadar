@@ -15,6 +15,7 @@ type JwtMetaData struct {
 	IsAdmin bool
 }
 
+// TokenValid checks validation of token
 func TokenValid(r *http.Request, cfg *config.Config) error {
 	token, err := VerifyToken(r, cfg)
 	if err != nil {
@@ -26,12 +27,16 @@ func TokenValid(r *http.Request, cfg *config.Config) error {
 	return nil
 }
 
+// VerifyToken will verify token
 func VerifyToken(r *http.Request, cfg *config.Config) (*jwt.Token, error) {
+
+	// Extract
 	tokenString := ExtractToken(r)
+
+	// Parse
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
-			// fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(cfg.JWTConfig.SecretKey), nil
 	})
@@ -41,6 +46,7 @@ func VerifyToken(r *http.Request, cfg *config.Config) (*jwt.Token, error) {
 	return token, nil
 }
 
+// ExtractToken will got token from request
 func ExtractToken(r *http.Request) string {
 	bearToken := r.Header.Get("Authorization")
 	strArr := strings.Split(bearToken, " ")
@@ -50,11 +56,16 @@ func ExtractToken(r *http.Request) string {
 	return ""
 }
 
+// ExtractMetaData will get information in the token
 func ExtractMetaData(r *http.Request, cfg *config.Config) (*JwtMetaData, error) {
+
+	// Verify
 	token, err := VerifyToken(r, cfg)
 	if err != nil {
 		return nil, err
 	}
+
+	// Data
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
 		isAdmin, ok := claims["isAdmin"].(bool)

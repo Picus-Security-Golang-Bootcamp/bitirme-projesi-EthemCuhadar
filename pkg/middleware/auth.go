@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// AuthMiddleware will check admin
 func AuthMiddleware(cfg *config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		jwtMetaData, err := helper.ExtractMetaData(c.Request, cfg)
@@ -26,6 +27,7 @@ func AuthMiddleware(cfg *config.Config) gin.HandlerFunc {
 	}
 }
 
+// JWTMiddleware will check token
 func JWTMiddleware(cfg *config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		err := helper.TokenValid(c.Request, cfg)
@@ -41,6 +43,7 @@ func JWTMiddleware(cfg *config.Config) gin.HandlerFunc {
 	}
 }
 
+// UserMiddleware will check user
 func UserMiddleware(cfg *config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user_id := c.Param("user_id")

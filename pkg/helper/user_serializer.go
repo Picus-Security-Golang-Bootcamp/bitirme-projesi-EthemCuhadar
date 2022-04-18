@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// ConvertRegisterRequestToUserModel
 func ConvertRegisterRequestToUserModel(rr *dtos.RegisterRequest) *models.User {
 	password, _ := bcrypt.GenerateFromPassword([]byte(*rr.Password), bcrypt.DefaultCost)
 	return &models.User{
