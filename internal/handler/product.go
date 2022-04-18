@@ -23,9 +23,10 @@ func NewProductHandler(r *gin.RouterGroup, service *service.ProductService, cfg 
 		config:  cfg,
 	}
 
-	r.GET("/product", ph.FetchAllProducts)
+	r.GET("/product/all", ph.FetchAllProducts)
 	r.GET("/product/:product_id", ph.FetchProduct)
 	r.GET("/category/:category_id/product", ph.FetchProductsOfSpecificCategory)
+	r.GET("/product", ph.SearchProducts)
 	r.POST("/product/create", ph.CreateProduct)
 	r.PUT("/product/:product_id", ph.UpdateProduct)
 	r.DELETE("/product/:product_id", ph.DeleteProduct)
@@ -82,6 +83,18 @@ func (ph *ProductHandler) FetchProduct(c *gin.Context) {
 
 	// Serialization into response body
 	c.JSON(http.StatusOK, product)
+}
+
+func (ph *ProductHandler) SearchProducts(c *gin.Context) {
+	keyword := c.Query("search")
+
+	pagination := helper.GeneratePaginationFromRequest(c)
+
+	products, err := ph.service.SearchProduct(keyword, pagination)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+	}
+	c.JSON(http.StatusOK, products)
 }
 
 func (ph *ProductHandler) FetchProductsOfSpecificCategory(c *gin.Context) {
