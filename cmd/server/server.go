@@ -50,7 +50,7 @@ func InitServer(cfg *config.Config) {
 	handler.NewProductHandler(productRouter, productService, cfg)
 
 	categoryService := service.NewCategoryService(repo)
-	handler.NewCategoryHandler(categoryRouter, categoryService)
+	handler.NewCategoryHandler(categoryRouter, categoryService, cfg)
 
 	userService := service.NewUserService(repo)
 	handler.NewUserHandler(userRouter, userService, cfg)
