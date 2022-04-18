@@ -19,11 +19,6 @@ import (
 // swagger:model RequestCategoryDto
 type RequestCategoryDto struct {
 
-	// id
-	// Example: 62995601-15f3-40bc-80c8-900f62116000
-	// Required: true
-	ID *string `json:"id"`
-
 	// name
 	// Example: Men Jeans
 	// Required: true
@@ -34,10 +29,6 @@ type RequestCategoryDto struct {
 func (m *RequestCategoryDto) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateID(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateName(formats); err != nil {
 		res = append(res, err)
 	}
@@ -45,15 +36,6 @@ func (m *RequestCategoryDto) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *RequestCategoryDto) validateID(formats strfmt.Registry) error {
-
-	if err := validate.Required("id", "body", m.ID); err != nil {
-		return err
-	}
-
 	return nil
 }
 

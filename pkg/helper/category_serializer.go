@@ -9,7 +9,6 @@ import (
 // client and convert into Category model which is used in the database.
 func ConvertRequestCategoryDtoToCategoryModel(rcdto *dtos.RequestCategoryDto) models.Category {
 	return models.Category{
-		ID:   *rcdto.ID,
 		Name: *rcdto.Name,
 	}
 }
