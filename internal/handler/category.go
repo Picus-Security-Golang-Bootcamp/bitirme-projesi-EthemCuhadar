@@ -5,21 +5,30 @@ import (
 	"net/http"
 
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/internal/service"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/config"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/helper"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/httpErrors"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type CategoryHandler struct {
 	service *service.CategoryService
+	config  *config.Config
 }
 
-func NewCategoryHandler(r *gin.RouterGroup, service *service.CategoryService) {
-	ch := &CategoryHandler{service: service}
+func NewCategoryHandler(r *gin.RouterGroup, service *service.CategoryService, cfg *config.Config) {
+	ch := &CategoryHandler{
+		service: service,
+		config:  cfg,
+	}
 
-	r.POST("/create", ch.CreateCategory)
 	r.GET("/", ch.FetchAllCategories)
 	r.GET("/:category_id", ch.FetchCategory)
+	r.Use(middleware.AuthMiddleware(cfg), middleware.JWTMiddleware(cfg))
+	{
+		r.POST("/create", ch.CreateCategory)
+	}
 }
 
 func (ch *CategoryHandler) CreateCategory(c *gin.Context) {
