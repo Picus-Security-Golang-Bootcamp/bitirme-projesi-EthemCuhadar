@@ -16,11 +16,12 @@ func main() {
 	logger.InitLogger()
 	defer logger.Close()
 
+	// Configuration parameters
 	cfg, err := config.LoadConfig("./../pkg/config/config-local")
 	if err != nil {
 		zap.L().Error("Path not found for LoadConfig()", zap.Error(err))
 	}
-	fmt.Println(cfg)
 
+	// Server Initialize
 	server.InitServer(cfg)
 }
