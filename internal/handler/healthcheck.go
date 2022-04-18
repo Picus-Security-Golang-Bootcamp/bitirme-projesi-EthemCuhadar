@@ -25,8 +25,8 @@ func NewHealthCheckHandler(r *gin.RouterGroup, cfg *config.Config) {
 
 func (hch *HealthCheckHandler) ShowInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"status":      "available",
-		"environment": "development",
-		"version":     "1.0.0",
+		"status":      hch.config.ServerConfig.Status,
+		"environment": hch.config.ServerConfig.Mode,
+		"version":     hch.config.ServerConfig.AppVersion,
 	})
 }

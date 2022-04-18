@@ -18,6 +18,7 @@ type Config struct {
 type ServerConfig struct {
 	AppVersion       string
 	Mode             string
+	Status           string
 	RoutePrefix      string
 	Debug            bool
 	Port             string

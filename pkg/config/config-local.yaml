@@ -1,6 +1,7 @@
 ServerConfig:
   AppVersion: 1.0.0
   Mode: Development
+  Status: Available
   RoutePrefix: /api/v1/ecommerce-api
   Debug: false
   Port: 8080
