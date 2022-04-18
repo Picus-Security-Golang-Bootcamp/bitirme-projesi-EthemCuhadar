@@ -56,6 +56,16 @@ func (ps *ProductService) FetchProduct(id string) (*dtos.ResponseProductDto, err
 	return productResponse, nil
 }
 
+func (ps *ProductService) SearchProduct(keyword string, pag *helper.Pagination) (*dtos.ResponseAllProductsDto, error) {
+	products, err := ps.repository.SearchProducts(keyword, pag)
+	if err != nil {
+		return nil, err
+	}
+
+	productsListResponse := helper.ConvertProductModelListToResponseProductDtoList(*products)
+	return productsListResponse, nil
+}
+
 func (ps *ProductService) FetchProductsOfSpecificCategory(id string, pag *helper.Pagination) (*dtos.ResponseAllProductsDto, error) {
 
 	// Response from repository
