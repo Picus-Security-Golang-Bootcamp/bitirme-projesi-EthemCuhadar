@@ -12,6 +12,7 @@ type IProductRepository interface {
 	FetchProductsOfSpecificCategory(string) (*[]models.Product, error)
 }
 
+// CreateProduct gets data from database and sends them into service, if there are no errors
 func (r *Repository) CreateProduct(p *models.Product) (*models.Product, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -23,11 +24,13 @@ func (r *Repository) CreateProduct(p *models.Product) (*models.Product, error) {
 	return p, nil
 }
 
+// FetchAllProducts gets data from database and sends them into service, if there are no errors
 func (r *Repository) FetchAllProducts(pag *helper.Pagination) (*[]models.Product, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var products = &[]models.Product{}
 
+	// Pagination
 	offset := (pag.Page) * pag.Limit
 	queryBuilder := r.DB.Limit(int(pag.Limit)).Offset(int(offset)).Order(pag.Sort)
 
@@ -38,6 +41,7 @@ func (r *Repository) FetchAllProducts(pag *helper.Pagination) (*[]models.Product
 	return products, nil
 }
 
+// FetchProduct gets data from database and sends them into service, if there are no errors
 func (r *Repository) FetchProduct(id string) (*models.Product, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -50,11 +54,13 @@ func (r *Repository) FetchProduct(id string) (*models.Product, error) {
 	return product, nil
 }
 
+// SearchProducts gets data from database and sends them into service, if there are no errors
 func (r *Repository) SearchProducts(keyword string, pag *helper.Pagination) (*[]models.Product, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var products = &[]models.Product{}
 
+	// Pagination
 	offset := (pag.Page) * pag.Limit
 	queryBuilder := r.DB.Limit(int(pag.Limit)).Offset(int(offset)).Order(pag.Sort)
 
@@ -65,6 +71,7 @@ func (r *Repository) SearchProducts(keyword string, pag *helper.Pagination) (*[]
 	return products, nil
 }
 
+// FetchProductsOfSpecificCategory gets data from database and sends them into service, if there are no errors
 func (r *Repository) FetchProductsOfSpecificCategory(id string, pag *helper.Pagination) (*[]models.Product, error) {
 
 	// DB query to get
@@ -77,6 +84,7 @@ func (r *Repository) FetchProductsOfSpecificCategory(id string, pag *helper.Pagi
 
 	var products = &[]models.Product{}
 
+	// Pagination
 	offset := (pag.Page) * pag.Limit
 	queryBuilder := r.DB.Limit(int(pag.Limit)).Offset(int(offset)).Order(pag.Sort)
 
@@ -85,6 +93,7 @@ func (r *Repository) FetchProductsOfSpecificCategory(id string, pag *helper.Pagi
 	return products, nil
 }
 
+// UpdateProduct gets data from database and sends them into service, if there are no errors
 func (r *Repository) UpdateProduct(p *models.Product) (*models.Product, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -96,13 +105,18 @@ func (r *Repository) UpdateProduct(p *models.Product) (*models.Product, error) {
 	return p, nil
 }
 
+// DeleteProduct gets data from database and sends them into service, if there are no errors
 func (r *Repository) DeleteProduct(id string) error {
+
+	// DB query
 	product, err := r.FetchProduct(id)
 	if err != nil {
 		return err
 	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
+
+	// DB query
 	if result := r.DB.Unscoped().Delete(&product); result.Error != nil {
 		return result.Error
 	}
