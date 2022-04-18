@@ -22,21 +22,29 @@ func NewCategoryService(repo *repo.Repository) *CategoryService {
 // Category model from repository and convert into response Category dto model. Finally,
 // returns the response Category dto model.
 func (cs *CategoryService) CreateCategory(c *models.Category) (*dtos.ResponseCategoryDto, error) {
+
+	// Response from repo
 	category, err := cs.repository.CreateCategory(c)
 	if err != nil {
 		return nil, err
 	}
+
+	// Convert
 	categoryResponse := helper.ConvertCategoryModelToResponseCategoryDto(category)
 	return categoryResponse, nil
 }
 
+// FetchAllCategories takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (cs *CategoryService) FetchAllCategories(pag *helper.Pagination) (*dtos.ResponseAllCategoriesDto, error) {
 
+	// Response from repo
 	categories, err := cs.repository.FetchAllCategories(pag)
 	if err != nil {
 		return nil, err
 	}
 
+	// Convert
 	categoryListResponse := helper.ConvertCategoryModelsToResponseAllCategoriesDto(*categories)
 	if err != nil {
 		return nil, err
@@ -44,11 +52,17 @@ func (cs *CategoryService) FetchAllCategories(pag *helper.Pagination) (*dtos.Res
 	return categoryListResponse, nil
 }
 
+// FetchCategory takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (cs *CategoryService) FetchCategory(id string) (*dtos.ResponseCategoryDto, error) {
+
+	// Response from repo
 	category, err := cs.repository.FetchCategory(id)
 	if err != nil {
 		return nil, err
 	}
+
+	// Convert
 	categoryResponse := helper.ConvertCategoryModelToResponseCategoryDto(category)
 	return categoryResponse, nil
 }

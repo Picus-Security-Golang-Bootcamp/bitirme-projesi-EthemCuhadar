@@ -6,14 +6,18 @@ import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/helper"
 )
 
+// ProductService struct with relative fields
 type ProductService struct {
 	repository *repo.Repository
 }
 
+// NewCartService returns a new service structs
 func NewProductService(repo *repo.Repository) *ProductService {
 	return &ProductService{repository: repo}
 }
 
+// CreateProduct takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) CreateProduct(p *dtos.RequestProductDto) (*dtos.ResponseProductDto, error) {
 
 	// Convert request into Model
@@ -30,6 +34,8 @@ func (ps *ProductService) CreateProduct(p *dtos.RequestProductDto) (*dtos.Respon
 	return productResponse, nil
 }
 
+// FetchAllProducts takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) FetchAllProducts(pag *helper.Pagination) (*dtos.ResponseAllProductsDto, error) {
 
 	// Response from repository
@@ -43,6 +49,8 @@ func (ps *ProductService) FetchAllProducts(pag *helper.Pagination) (*dtos.Respon
 	return productsListResponse, nil
 }
 
+// FetchProduct takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) FetchProduct(id string) (*dtos.ResponseProductDto, error) {
 
 	// Response from repository
@@ -56,7 +64,11 @@ func (ps *ProductService) FetchProduct(id string) (*dtos.ResponseProductDto, err
 	return productResponse, nil
 }
 
+// SearchProduct takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) SearchProduct(keyword string, pag *helper.Pagination) (*dtos.ResponseAllProductsDto, error) {
+
+	// Response from repo
 	products, err := ps.repository.SearchProducts(keyword, pag)
 	if err != nil {
 		return nil, err
@@ -66,6 +78,8 @@ func (ps *ProductService) SearchProduct(keyword string, pag *helper.Pagination) 
 	return productsListResponse, nil
 }
 
+// FetchProductsOfSpecificCategory takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) FetchProductsOfSpecificCategory(id string, pag *helper.Pagination) (*dtos.ResponseAllProductsDto, error) {
 
 	// Response from repository
@@ -79,6 +93,8 @@ func (ps *ProductService) FetchProductsOfSpecificCategory(id string, pag *helper
 	return productsListResponse, nil
 }
 
+// UpdateProduct takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) UpdateProduct(id string, p *dtos.RequestProductDto) (*dtos.ResponseProductDto, error) {
 
 	// Convert request into Model
@@ -95,6 +111,8 @@ func (ps *ProductService) UpdateProduct(id string, p *dtos.RequestProductDto) (*
 	return productResponse, nil
 }
 
+// DeleteProduct takes data from handler and returns response data if there is no error.
+// Otherwise, it returns nil and error
 func (ps *ProductService) DeleteProduct(id string) error {
 
 	// Response from repository
