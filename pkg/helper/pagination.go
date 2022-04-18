@@ -19,25 +19,14 @@ type Pagination struct {
 func GeneratePaginationFromRequest(c *gin.Context) *Pagination {
 
 	// Default parameters
-	limit := int64(2)
+	limit := int64(10)
 	page := int64(1)
 	sort := "created_at asc"
 
-	// Query
-	query := c.Request.URL.Query()
-
-	// Assign parameters
-	for key, value := range query {
-		queryValue := value[len(value)-1]
-		switch key {
-		case "limit":
-			limit, _ = strconv.ParseInt(queryValue, 10, 64)
-		case "page":
-			page, _ = strconv.ParseInt(queryValue, 10, 64)
-		case "sort":
-			sort = queryValue
-		}
-	}
+	// Query parameters
+	limit, _ = strconv.ParseInt(c.Query("limit"), 10, 64)
+	page, _ = strconv.ParseInt(c.Query("page"), 10, 64)
+	sort = c.Query("order")
 
 	return &Pagination{
 		Limit: limit,
