@@ -170,3 +170,7 @@ The relative endpoints can be seen below screenshot which are created with Swagg
 * **Item**
 
 ![swagger1](pkg/pictures/swagger6.png)
+
+## 6. Licence
+
+**MIT Licence**
