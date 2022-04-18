@@ -151,7 +151,7 @@ The relative endpoints can be seen below screenshot which are created with Swagg
 
 * **Api Healthcheck**
 
-![swagger1](pkg\pictures\swagger1.png)
+![swagger1](pkg/pictures/swagger1.png)
 
 * **Product**
 
@@ -159,7 +159,7 @@ The relative endpoints can be seen below screenshot which are created with Swagg
 
 * **Category**
 
-![swagger1](pkg\pictures\swagger3.png)
+![swagger1](pkg/pictures/swagger3.png)
 
 * **Cart**
 
