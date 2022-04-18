@@ -3,19 +3,19 @@ ServerConfig:
   Mode: Development
   Status: Available
   RoutePrefix: /api/v1/ecommerce-api
-  Debug: false
-  Port: 8080
-  TimeoutSecs: 60
-  ReadTimeoutSecs: 60
-  WriteTimeoutSecs: 12
+  Debug: 
+  Port: 
+  TimeoutSecs: 
+  ReadTimeoutSecs: 
+  WriteTimeoutSecs: 
 
 JWTConfig:
-  SessionTime: 3600
-  SecretKey: dummySecretKey
+  SessionTime: 
+  SecretKey: 
 
 DBConfig:
-  DataSourceName: postgres://ethem:1234@localhost:5432/ecommerce?sslmode=disable
-  Name: ecommerce
-  MaxOpen: 50
-  MaxIdle: 50
-  MaxLifetime: 5
+  DataSourceName: 
+  Name: 
+  MaxOpen: 
+  MaxIdle: 
+  MaxLifetime: 
