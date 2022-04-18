@@ -39,6 +39,7 @@ func InitServer(cfg *config.Config) {
 
 	// Router groups
 	rootRouter := r.Group(cfg.ServerConfig.RoutePrefix)
+	healthcheckRouter := rootRouter.Group("/healthcheck")
 	productRouter := rootRouter.Group("/")
 	categoryRouter := rootRouter.Group("/category")
 	userRouter := rootRouter.Group("/user")
@@ -47,6 +48,9 @@ func InitServer(cfg *config.Config) {
 	// Repository
 	repo := repo.NewRepository(DB)
 	repo.Migrations()
+
+	// HealthCheck
+	handler.NewHealthCheckHandler(healthcheckRouter, cfg)
 
 	// Product Service and Handler
 	productService := service.NewProductService(repo)
