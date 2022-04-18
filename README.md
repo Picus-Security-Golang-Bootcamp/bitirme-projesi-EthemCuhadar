@@ -144,6 +144,9 @@ The list of technologies (libraries, packages etc.) are:
 * [JWT](github.com/dgrijalva/jwt-go)
 * [Bcrypt](golang.org/x/crypto/bcrypt)
 * [Swagger](https://swagger.io)
+* [Postman](www.postman.com)
+
+
 
 ## 5. Swagger Schemas
 
