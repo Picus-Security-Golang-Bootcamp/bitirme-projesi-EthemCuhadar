@@ -261,7 +261,7 @@ func (cs *CartService) CompleteOrder(cart_id string) (*dtos.CreateCartResponse, 
 	if !cartModel.IsOrdered {
 		cartModel.IsOrdered = true
 		cartModel.OrderTime = time.Now()
-		cartModel.CancelTime = time.Now().Add(5 * time.Minute)
+		cartModel.CancelTime = time.Now().Add(336 * time.Hour)
 	} else {
 		return nil, errors.New("aldready ordered")
 	}
