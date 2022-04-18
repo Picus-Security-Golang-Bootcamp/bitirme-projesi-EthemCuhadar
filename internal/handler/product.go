@@ -8,6 +8,7 @@ import (
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/config"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/helper"
 	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/httpErrors"
+	"github.com/Picus-Security-Golang-Bootcamp/bitirme-projesi-EthemCuhadar/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/strfmt"
 )
@@ -27,9 +28,13 @@ func NewProductHandler(r *gin.RouterGroup, service *service.ProductService, cfg 
 	r.GET("/product/:product_id", ph.FetchProduct)
 	r.GET("/category/:category_id/product", ph.FetchProductsOfSpecificCategory)
 	r.GET("/product", ph.SearchProducts)
-	r.POST("/product/create", ph.CreateProduct)
-	r.PUT("/product/:product_id", ph.UpdateProduct)
-	r.DELETE("/product/:product_id", ph.DeleteProduct)
+
+	r.Use(middleware.JWTMiddleware(cfg), middleware.AuthMiddleware(cfg))
+	{
+		r.POST("/product/create", ph.CreateProduct)
+		r.PUT("/product/:product_id", ph.UpdateProduct)
+		r.DELETE("/product/:product_id", ph.DeleteProduct)
+	}
 
 }
 
