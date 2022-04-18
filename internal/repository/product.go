@@ -50,6 +50,21 @@ func (r *Repository) FetchProduct(id string) (*models.Product, error) {
 	return product, nil
 }
 
+func (r *Repository) SearchProducts(keyword string, pag *helper.Pagination) (*[]models.Product, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	var products = &[]models.Product{}
+
+	offset := (pag.Page) * pag.Limit
+	queryBuilder := r.DB.Limit(int(pag.Limit)).Offset(int(offset)).Order(pag.Sort)
+
+	// DB query to get
+	if err := queryBuilder.Where("name LIKE ?", "%"+keyword+"%").Find(&products).Error; err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
 func (r *Repository) FetchProductsOfSpecificCategory(id string, pag *helper.Pagination) (*[]models.Product, error) {
 
 	// DB query to get
