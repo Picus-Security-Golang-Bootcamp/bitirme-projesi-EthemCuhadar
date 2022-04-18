@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Product struct with relative fields
 type Product struct {
 	gorm.Model
 	ID          string  `json:"id" gorm:"primaryKey"`
@@ -18,9 +19,8 @@ type Product struct {
 	ProductCategories []ProductCategory `gorm:"foreignkey:ProductId"`
 }
 
+// BeforeCreate sets a new uuid string to product ID
 func (p *Product) BeforeCreate(tx *gorm.DB) error {
-	if p.ID == "" {
-		p.ID = uuid.NewString()
-	}
+	p.ID = uuid.NewString()
 	return nil
 }

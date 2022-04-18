@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Item struct with relative fields
 type Item struct {
 	ID        string  `json:"id"`
 	Price     float64 `json:"price"`
@@ -13,6 +14,7 @@ type Item struct {
 	ProductId string  `json:"productId"`
 }
 
+// BeforeCreate sets a new uuid string to item ID
 func (i *Item) BeforeCreate(tx *gorm.DB) error {
 	i.ID = uuid.NewString()
 	return nil
